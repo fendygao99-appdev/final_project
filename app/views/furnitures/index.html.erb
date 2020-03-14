@@ -1,0 +1,196 @@
+<div class="row mb-3">
+  <div class="col-md-12">
+    <h1>
+      List of all furnitures
+    </h1>
+  </div>
+</div>
+
+<hr>
+
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+    <h2>
+      Add a new furniture
+    </h2>
+
+    <form action="/insert_furniture" method="post">
+      <div class="form-group">
+        <label for="item_box">
+          Item
+        </label>
+
+        <input type="text" id="item_box" name="query_item" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="original_brand_box">
+          Original brand
+        </label>
+
+        <input type="text" id="original_brand_box" name="query_original_brand" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="category_box">
+          Category
+        </label>
+
+        <input type="text" id="category_box" name="query_category" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="condition_box">
+          Condition
+        </label>
+
+        <input type="text" id="condition_box" name="query_condition" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="owner_id_box">
+          Owner
+        </label>
+
+        <input type="text" id="owner_id_box" name="query_owner_id" class="form-control">
+      </div>
+
+      <div class="form-group">
+        <label for="price_box">
+          Price
+        </label>
+
+        <input type="text" id="price_box" name="query_price" class="form-control">
+      </div>
+
+      <div class="custom-control custom-checkbox mb-3">
+        <input type="checkbox" class="custom-control-input" id="is_available_box" name="query_is_available" value="1">
+
+        <label class="custom-control-label" for="is_available_box">Is available</label>
+      </div>
+
+      <div class="form-group">
+        <label for="image_box">
+          Image
+        </label>
+
+        <input type="text" id="image_box" name="query_image" class="form-control">
+      </div>
+
+      <button class="btn btn-block btn-outline-secondary">
+        Create furniture
+      </button>
+    </form>
+  </div>
+</div>
+
+<hr>
+<div class="row mb-3">
+  <div class="col-md-12">
+    <table class="table">
+      <tr>
+        <th>
+          ID
+        </th>
+
+        <th>
+          Item
+        </th>
+
+        <th>
+          Original brand
+        </th>
+
+        <th>
+          Category
+        </th>
+
+        <th>
+          Condition
+        </th>
+
+        <th>
+          Owner
+        </th>
+
+        <th>
+          Price
+        </th>
+
+        <th>
+          Is available
+        </th>
+
+        <th>
+          Image
+        </th>
+
+        <th>
+          Created at
+        </th>
+
+        <th>
+          Updated at
+        </th>
+
+        <th>
+        </th>
+      </tr>
+
+      <% @furnitures.each do |furniture| %>
+      <tr>
+        <td>
+          <%= furniture.id %>
+        </td>
+
+        <td>
+          <%= furniture.item %>
+        </td>
+
+        <td>
+          <%= furniture.original_brand %>
+        </td>
+
+        <td>
+          <%= furniture.category %>
+        </td>
+
+        <td>
+          <%= furniture.condition %>
+        </td>
+
+        <td>
+          <%= furniture.owner_id %>
+        </td>
+
+        <td>
+          <%= furniture.price %>
+        </td>
+
+        <td>
+          <%= furniture.is_available %>
+        </td>
+
+        <td>
+          <%= furniture.image %>
+        </td>
+
+        <td>
+          <%= time_ago_in_words(furniture.created_at) %> ago
+        </td>
+        <td>
+          <%= time_ago_in_words(furniture.updated_at) %> ago
+        </td>
+
+        <td>
+          <a href="/furnitures/<%= furniture.id %>">
+            Show details
+          </a>
+        </td>
+      </tr>
+      <% end %>
+    </table>
+  </div>
+</div>
+
+<hr>
