@@ -1,7 +1,9 @@
 class FurnituresController < ApplicationController
+  skip_before_action(:force_user_sign_in, { :only => [:index] })
+  
   def index
     @furnitures = Furniture.all.order({ :created_at => :desc })
-
+    @my_furnitures = @furnitures.where({ :owner_id => @current_user.id})
     render({ :template => "furnitures/index.html.erb" })
   end
 

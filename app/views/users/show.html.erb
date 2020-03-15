@@ -1,0 +1,110 @@
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+    <h1>
+      <%= @current_user.username %>'s Profile
+    </h1>
+
+    <hr>
+    <div class="row mb-3">
+      <div class="col-md-12">
+        <h2>
+          My listed furniture items
+        </h2>
+        <table class="table">
+          <tr>
+            <%# <th>
+              ID
+            </th> %>
+
+            <th>
+              Item
+            </th>
+
+            <th>
+              Original brand
+            </th>
+
+            <th>
+              Category
+            </th>
+
+            <th>
+              Condition
+            </th>
+
+            <th>
+              Owner
+            </th>
+
+            <th>
+              Price (USD)
+            </th>
+
+            <th>
+              Is this currently available?
+            </th>
+
+            <th>
+              Image
+            </th>
+
+            <th>
+              Created at
+            </th>
+
+            <th>
+            </th>
+          </tr>
+
+          
+          
+        </table>
+      </div>
+    </div>
+      
+      <%# <h3>My Wishlish</h3>
+        <table class="table">
+          <tr>
+
+            <th>
+              Furniture Item
+            </th>
+
+            <th>
+              Current Owner
+            </th>
+
+            
+
+            <th>
+            </th>
+          </tr>
+
+          <% @my_likes.each do |like| %>
+          <%# <tr>
+            <td>
+              <%= like.furniture.item %>
+            <%# </td>
+
+            <td>
+              <%= like.furniture.owner.username %> 
+            <%# </td>
+
+            <td>
+              <%= like.furniture_watcher_id %>
+            <%# </td> %>
+            <%# <td>
+              <a href="/likes/<%= like.id %>
+                <%# Show details  %>
+              <%# </a> %>
+            <%# </td> %>
+          <%# </tr> %>
+          <%# <% end %> 
+        <%# </table> %> 
+        
+      </div>
+    </div>
+
+    <hr>
+  </div>
+</div>

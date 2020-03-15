@@ -9,9 +9,12 @@
 <hr>
 
 <div class="row mb-3">
+
+  <% if @current_user.present? %>
   <div class="col-md-8 offset-md-2">
+  
     <h2>
-      Add a new furniture
+      Sell a furniture item
     </h2>
 
     <form action="/insert_furniture" method="post">
@@ -20,7 +23,7 @@
           Item
         </label>
 
-        <input type="text" id="item_box" name="query_item" class="form-control">
+        <input type="text" id="item_box" name="query_item" class="form-control" placeholder="What are you selling?">
       </div>
 
       <div class="form-group">
@@ -32,41 +35,40 @@
       </div>
 
       <div class="form-group">
-        <label for="category_box">
-          Category
-        </label>
-
-        <input type="text" id="category_box" name="query_category" class="form-control">
+        <label for="category_box">Category:</label>
+        <select id="category_box" name="query_category">
+          <option value="Living Room">Living Room</option>
+          <option value="Bedroom">Bedroom</option>
+          <option value="Kitchen">Kitchen + Cooking</option>
+          <option value="Bathroom">Bathroom</option>
+          <option value="Misc">Miscellaneous</option>
+        </select>
       </div>
 
       <div class="form-group">
         <label for="condition_box">
-          Condition
+          Condition:
         </label>
 
-        <input type="text" id="condition_box" name="query_condition" class="form-control">
+        <select id="condition_box" name="query_condition">
+          <option value="Like-new!">Like-new!</option>
+          <option value="Excellent">Excellent</option>
+          <option value="Pretty good">Pretty good</option>
+          <option value="OK-ish">OK-ish</option>
+          <option value="It's been through some stuff">It's been through some stuff</option>
+        </select>
       </div>
 
       <div class="form-group">
-        <label for="owner_id_box">
-          Owner
-        </label>
-
-        <input type="text" id="owner_id_box" name="query_owner_id" class="form-control">
+        <input type="hidden" id="owner_id_box" name="query_owner_id" class="form-control" value="<%=@current_user.id%>">
       </div>
 
       <div class="form-group">
         <label for="price_box">
-          Price
+          Price (USD)
         </label>
 
-        <input type="text" id="price_box" name="query_price" class="form-control">
-      </div>
-
-      <div class="custom-control custom-checkbox mb-3">
-        <input type="checkbox" class="custom-control-input" id="is_available_box" name="query_is_available" value="1">
-
-        <label class="custom-control-label" for="is_available_box">Is available</label>
+        <input type="number" id="price_box" name="query_price" class="form-control" placeholder="Enter a number. . .">
       </div>
 
       <div class="form-group">
@@ -74,24 +76,42 @@
           Image
         </label>
 
-        <input type="text" id="image_box" name="query_image" class="form-control">
+        <input type="text" id="image_box" name="query_image" class="form-control" placeholder="Enter an image URL">
       </div>
+
+      <%# <div class="custom-control custom-checkbox mb-3"> %>
+        <input type="hidden" class="custom-control-input" id="is_available_box" name="query_is_available" value=true>
+
+        <%# <label class="custom-control-label" for="is_available_box">Is this currently available?</label> %>
+      <%# </div> %>
 
       <button class="btn btn-block btn-outline-secondary">
         Create furniture
       </button>
     </form>
+
   </div>
+  <% else %>
+    <div class="col-md-8 offset-md-2">
+      <h4>
+        <center>To sell a furniture item, <a href="/user_sign_in">sign in</a> or <a href="/user_sign_up">sign up</a>.</center>
+      </h4>
+    </div> 
+  <% end %>
 </div>
+
 
 <hr>
 <div class="row mb-3">
   <div class="col-md-12">
+    <h2>
+      Browse furniture items
+    </h2>
     <table class="table">
       <tr>
-        <th>
+        <%# <th>
           ID
-        </th>
+        </th> %>
 
         <th>
           Item
@@ -114,11 +134,11 @@
         </th>
 
         <th>
-          Price
+          Price (USD)
         </th>
 
         <th>
-          Is available
+          Is this currently available?
         </th>
 
         <th>
@@ -130,18 +150,14 @@
         </th>
 
         <th>
-          Updated at
-        </th>
-
-        <th>
         </th>
       </tr>
 
       <% @furnitures.each do |furniture| %>
       <tr>
-        <td>
+        <%# <td>
           <%= furniture.id %>
-        </td>
+        <%# </td> %>
 
         <td>
           <%= furniture.item %>
@@ -160,7 +176,7 @@
         </td>
 
         <td>
-          <%= furniture.owner_id %>
+          <%= furniture.owner.username %>
         </td>
 
         <td>
@@ -168,7 +184,11 @@
         </td>
 
         <td>
-          <%= furniture.is_available %>
+          <% if furniture.is_available == true %>
+          Yes
+          <% else %>
+          No
+          <% end %>
         </td>
 
         <td>
@@ -177,9 +197,6 @@
 
         <td>
           <%= time_ago_in_words(furniture.created_at) %> ago
-        </td>
-        <td>
-          <%= time_ago_in_words(furniture.updated_at) %> ago
         </td>
 
         <td>

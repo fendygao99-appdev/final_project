@@ -1,7 +1,7 @@
 <div class="row mb-3">
   <div class="col-md-8 offset-md-2">
     <h1>
-      Furniture #<%= @furniture.id %> details
+      Furniture details: <%= @furniture.item %>
     </h1>
 
     <div class="row mb-3">
@@ -11,11 +11,13 @@
         </a>
       </div>
 
+      <% if @furniture.owner.id == @current_user.id %>
       <div class="col">
         <a href="/delete_furniture/<%= @furniture.id %>" class="btn btn-block btn-outline-secondary">
           Delete furniture
         </a>
       </div>
+      <% end %>
     </div>
 
     <dl>
@@ -51,21 +53,25 @@
         Owner
       </dt>
       <dd>
-        <%= @furniture.owner_id %>
+        <%= @furniture.owner.username %>
       </dd>
 
       <dt>
-        Price
+        Price (USD)
       </dt>
       <dd>
-        <%= @furniture.price %>
+        $<%= @furniture.price %>
       </dd>
 
       <dt>
-        Is available
+        Is this currently available?
       </dt>
       <dd>
-        <%= @furniture.is_available %>
+        <% if @furniture.is_available == true %>
+        Yes 
+        <% else %>
+        No
+        <% end %>
       </dd>
 
       <dt>
@@ -82,19 +88,14 @@
         <%= time_ago_in_words(@furniture.created_at) %> ago
       </dd>
 
-      <dt>
-        Updated at
-      </dt>
-      <dd>
-        <%= time_ago_in_words(@furniture.updated_at) %> ago
-      </dd>
+      
     </dl>
   </div>
 </div>
 
 <hr>
 
-
+<% if @furniture.owner.id == @current_user.id %>
 <div class="row mb-3">
   <div class="col-md-8 offset-md-2">
     <h2>
@@ -119,27 +120,29 @@
       </div>
 
       <div class="form-group">
-        <label for="category_box">
-          Category
-        </label>
-
-        <input type="text" id="category_box" name="query_category" class="form-control" value="<%= @furniture.category %>">
+        <label for="category_box">Category:</label>
+        <select id="category_box" name="query_category">
+          <option value="Living Room">Living Room</option>
+          <option value="Bedroom">Bedroom</option>
+          <option value="Kitchen">Kitchen + Cooking</option>
+          <option value="Bathroom">Bathroom</option>
+          <option value="Misc">Miscellaneous</option>
+        </select>
       </div>
 
       <div class="form-group">
-        <label for="condition_box">
-          Condition
-        </label>
-
-        <input type="text" id="condition_box" name="query_condition" class="form-control" value="<%= @furniture.condition %>">
+        <label for="condition_box">Condition:</label>
+        <select id="condition_box" name="query_condition">
+          <option value="Like-new!">Like-new!</option>
+          <option value="Excellent">Excellent</option>
+          <option value="Pretty good">Pretty good</option>
+          <option value="OK-ish">OK-ish</option>
+          <option value="It's been through some stuff">It's been through some stuff</option>
+        </select>
       </div>
 
       <div class="form-group">
-        <label for="owner_id_box">
-          Owner
-        </label>
-
-        <input type="text" id="owner_id_box" name="query_owner_id" class="form-control" value="<%= @furniture.owner_id %>">
+        <input type="hidden" id="owner_id_box" name="query_owner_id" class="form-control" value="<%= @current_user.id %>">
       </div>
 
       <div class="form-group">
@@ -154,7 +157,7 @@
         <input type="checkbox" class="custom-control-input" id="is_available_box" name="query_is_available" value="1" <%= "checked" if @furniture.is_available %>>
 
         <label class="custom-control-label"
-          for="is_available_box">Is available</label>
+          for="is_available_box">Is it still available?</label>
       </div>
 
       <div class="form-group">
@@ -171,5 +174,49 @@
     </form>
   </div>
 </div>
+<% end %>
 
-<hr>
+<% if @furniture.owner.id != @current_user.id %>
+<div class="row mb-3">
+  <div class="col-md-8 offset-md-2">
+
+    <h4>Make it yours</h4>
+    <form action="/insert_offer"  method="get" for="offerer_id_box">
+      <div class="form-group">
+        <label for="offer_box">
+          My offer:
+        </label>
+
+        <input type="text" id="offer_box" name="query_offer" class="form-control" placeholder="<%= @furniture.price %>">
+      </div>
+      <%# <div class="form-group"> %>
+        <input type="hidden" id="offerer_id_box" name="query_offerer_id" class="form-control" value="<%= @current_user.id %>">
+      <%# </div> %>
+
+      <button class="btn btn-block btn-outline-secondary">
+        Send my offer!
+      </button>
+      
+    </form>
+
+    <hr>
+    <h4>Not ready for commitment yet?</h4>
+    <form action="/insert_like"  method="post" for="fan_id_box">
+      <div class="form-group">
+
+      <%# <div class="form-group"> %>
+        <input type="hidden" id="fan_id_box" name="query_furniture_watcher_id" class="form-control" value="<%= @current_user.id %>">
+        <input type="hidden" id="furniture_id_box" name="query_furniture_id" class="form-control" value="<%= @furniture.id %>">
+      <%# </div> %>
+
+      <button class="btn btn-block btn-outline-secondary">
+        Add to my wishlist
+      </button>
+      </div>
+    </form>
+
+  </div>
+</div>
+
+<% else %>
+<% end %>

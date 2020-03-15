@@ -41,6 +41,7 @@ Rails.application.routes.draw do
   #------------------------------
 
   # Routes for the Furniture resource:
+  get("/", { :controller => "furnitures", :action => "index" })
 
   # CREATE
   post("/insert_furniture", { :controller => "furnitures", :action => "create" })
@@ -66,6 +67,10 @@ Rails.application.routes.draw do
   # CREATE RECORD
   post("/insert_user", { :controller => "users", :action => "create"  })
       
+  # READ
+  # get("/users", { :controller => "users", :action => "index" })
+  get("/users/:user_id", { :controller => "users", :action => "show" })
+
   # EDIT PROFILE FORM        
   get("/edit_user_profile", { :controller => "users", :action => "edit_registration_form" })       
   # UPDATE RECORD
