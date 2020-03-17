@@ -3,7 +3,7 @@ class FurnituresController < ApplicationController
   
   def index
     @furnitures = Furniture.all.order({ :created_at => :desc })
-    @my_furnitures = @furnitures.where({ :owner_id => @current_user.id})
+    
     render({ :template => "furnitures/index.html.erb" })
   end
 

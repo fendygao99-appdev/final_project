@@ -6,9 +6,9 @@ class UsersController < ApplicationController
   end
 
   def show
-    the_id = params.fetch("user_id")
-    @user = User.where({:id => the_id }).at(0)
-    
+    @the_username = params.fetch("username")
+    @user = User.where({:id => @the_username }).at(0)
+
     render({ :template => "users/show.html.erb" })
   end
 
@@ -35,7 +35,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    @user = @current_user
+    # @user = @current_user
     @user.email = params.fetch("query_email")
     @user.password = params.fetch("query_password")
     @user.password_confirmation = params.fetch("query_password_confirmation")
@@ -51,7 +51,8 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @current_user.destroy
+    @user.destroy
+    # @current_user.destroy
     reset_session
     
     redirect_to("/", { :notice => "User account cancelled" })

@@ -69,7 +69,7 @@ Rails.application.routes.draw do
       
   # READ
   # get("/users", { :controller => "users", :action => "index" })
-  get("/users/:user_id", { :controller => "users", :action => "show" })
+  get("/users/:username", { :controller => "users", :action => "show" })
 
   # EDIT PROFILE FORM        
   get("/edit_user_profile", { :controller => "users", :action => "edit_registration_form" })       
