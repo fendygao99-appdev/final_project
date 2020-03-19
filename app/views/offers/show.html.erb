@@ -99,10 +99,14 @@
       </div>
 
       <div class="custom-control custom-checkbox mb-3">
-        <input type="checkbox" class="custom-control-input" id="offer_accepted_box" name="query_offer_accepted" value="1" <%= "checked" if @offer.offer_accepted %>>
-
-        <label class="custom-control-label"
-          for="offer_accepted_box">Offer accepted</label>
+        <label for="offer_status_box">Status:</label>
+        <select id="offer_status_box" name="query_offer_accepted" >
+          <option value=""></option>
+          <option value="accept">Accepted</option>
+          <option value="reject">Rejected</option>
+          
+          
+        </select>
       </div>
 
       <button class="btn btn-block btn-outline-secondary">

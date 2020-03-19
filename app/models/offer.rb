@@ -3,7 +3,7 @@
 # Table name: offers
 #
 #  id                 :integer          not null, primary key
-#  offer_accepted     :boolean
+#  offer_accepted     :string
 #  offer_amount       :integer
 #  created_at         :datetime         not null
 #  updated_at         :datetime         not null

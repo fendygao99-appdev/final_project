@@ -1,17 +1,25 @@
 <div class="row mb-3">
   <div class="col-md-12 offset-md-0">
     <h1>
-      <%= @current_user.username %>'s Profile
+      <%= @user.username %>'s Profile
     </h1>
     
     <dl>
       <dt>Email:</dt>
-      <dd><%= @current_user.email %></dd>
+      <dd><%= @user.email %></dd>
     </dl>
 
     <hr>
 
-    <h2><%= @current_user.username%>'s Listings (<%= @current_user.furnitures.order({ :created_at => :desc }).count %>)</h2>
+    <% if @user == @current_user%>
+    <h4><a href="/offers">
+      My Sent Offers
+    </a></h4>
+    
+    <hr>
+    <% end %>
+
+    <h2><%= @user.username%>'s Listings (<%= @user.furnitures.order({ :created_at => :desc }).count %>)</h2>
     <table class="table">
       <tr>
         <th>Item</th>
@@ -24,9 +32,10 @@
         <th>Image</th>
         <th></th>
         <th># of Likes</th>
+        <th># of Offers</th>
       </tr>
 
-      <% @current_user.furnitures.each do |furniture| %>
+      <% @user.furnitures.each do |furniture| %>
       <tr>
         <td><%= furniture.item %></td>
         <td><%= furniture.original_brand %></td>
@@ -49,13 +58,16 @@
 
         <td><%= Like.where({ :furniture_id => furniture.id}).count%>
         </td>
+
+        <td><%= Offer.where({ :furniture_id => furniture.id}).count%>
+        </td>
       </tr>
       <% end %>
     </table>
 
     <hr>
 
-    <h4><%= @current_user.username%>'s Wishlist (<%= @current_user.liked_furnitures.order({ :created_at => :desc }).count %>)</h4>
+    <h2><%= @user.username%>'s Wishlist (<%= @user.liked_furnitures.order({ :created_at => :desc }).count %>)</h2>
 
     <table class="table">
       <tr>
@@ -68,16 +80,22 @@
         <th>Currently available?</th>
         <th>Image</th>
         <th></th>
-        <th></th>
+        <% if @user == @current_user %>
+          <th></th>
+        <% end %>
       </tr>
 
-      <% @current_user.liked_furnitures.each do |furniture| %>
+      <% @user.liked_furnitures.each do |furniture| %>
       <tr>
         <td><%= furniture.item %></td>
         <td><%= furniture.original_brand %></td>
         <td><%= furniture.category %></td>
         <td><%= furniture.condition %></td>
-        <td><%= furniture.owner.username %></td>
+        <td>
+          <a href="/users/<%= furniture.owner.username %>"> 
+            <%= furniture.owner.username %>
+          </a>
+        </td>
         <td><%= furniture.price %></td>
 
         <td>
@@ -92,13 +110,18 @@
 
         <td><a href="/furnitures/<%= furniture.id %>">Show details</a></td>
 
+        <% if @user == @current_user %>
         <td>
-          <a href="/delete_like/<%= Like.where({:furniture_watcher_id => @current_user.id, :furniture_id=> furniture.id}).at(0).id %>">Delete like</a>
+          <a href="/delete_like/<%= Like.where({:furniture_watcher_id => @user.id, :furniture_id=> furniture.id}).at(0).id %>">Delete like</a>
         </td>
+        <% end %>
       </tr>
       <% end %>
     </table>
 
     <hr>
+
+    
+
   </div>
 </div>

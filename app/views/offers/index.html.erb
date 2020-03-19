@@ -1,16 +1,16 @@
 <div class="row mb-3">
   <div class="col-md-12">
     <h1>
-      List of all offers
+      My Sent Offers (<%= Offer.where({ :furniture_buyer_id => @current_user.id }).count %>)
     </h1>
   </div>
 </div>
 
-<hr>
+<%# <hr> %>
 
-<div class="row mb-3">
-  <div class="col-md-8 offset-md-2">
-    <h2>
+<%# <div class="row mb-3">
+  <div class="col-md-8 offset-md-2"> %>
+    <%# <h2>
       Add a new offer
     </h2>
 
@@ -39,42 +39,37 @@
         <input type="text" id="offer_amount_box" name="query_offer_amount" class="form-control">
       </div>
 
-      <div class="custom-control custom-checkbox mb-3">
-        <input type="checkbox" class="custom-control-input" id="offer_accepted_box" name="query_offer_accepted" value="1">
-
-        <label class="custom-control-label" for="offer_accepted_box">Offer accepted</label>
+      <div class="form-group">
+        <input type="hidden" id="offer_accepted_box" name="query_offer_accepted" value="">
       </div>
 
       <button class="btn btn-block btn-outline-secondary">
         Create offer
       </button>
-    </form>
-  </div>
-</div>
+    </form> %>
+  <%# </div>
+</div> %>
 
-<hr>
+<%# <hr> %>
 <div class="row mb-3">
   <div class="col-md-12">
     <table class="table">
       <tr>
+
         <th>
-          ID
+          Furniture Item
         </th>
 
         <th>
-          Furniture
+          Offer Amount (USD)
         </th>
 
         <th>
-          Furniture buyer
+          Owner
         </th>
 
         <th>
-          Offer amount
-        </th>
-
-        <th>
-          Offer accepted
+          Offer Status
         </th>
 
         <th>
@@ -82,25 +77,17 @@
         </th>
 
         <th>
-          Updated at
         </th>
 
         <th>
         </th>
       </tr>
 
-      <% @offers.each do |offer| %>
+      <% @offers.where({ :furniture_buyer_id => @current_user.id}).each do |offer| %>
       <tr>
-        <td>
-          <%= offer.id %>
-        </td>
 
         <td>
-          <%= offer.furniture_id %>
-        </td>
-
-        <td>
-          <%= offer.furniture_buyer_id %>
+          <%= offer.furniture.item %>
         </td>
 
         <td>
@@ -108,19 +95,32 @@
         </td>
 
         <td>
-          <%= offer.offer_accepted %>
+          <%= offer.furniture.owner.username %>
+        </td>
+
+        <td>
+          <% if offer.offer_accepted == "accept"%>
+          Accepted!!
+          <% elsif offer.offer_accepted == "reject"%>
+          Rejected
+          <% else %>
+          Pending
+          <% end %>
         </td>
 
         <td>
           <%= time_ago_in_words(offer.created_at) %> ago
         </td>
+
         <td>
-          <%= time_ago_in_words(offer.updated_at) %> ago
+          <a href="/furnitures/<%= offer.furniture.id %>">
+            Show furniture details
+          </a>
         </td>
 
         <td>
-          <a href="/offers/<%= offer.id %>">
-            Show details
+          <a href="/delete_offer/<%= offer.id %>">
+            Delete Offer
           </a>
         </td>
       </tr>

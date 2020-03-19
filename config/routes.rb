@@ -1,5 +1,5 @@
 Rails.application.routes.draw do
-
+  get("/furniture_room/:category_name", { :controller => "furnitures", :action => "show_category" })
 
 
   # Routes for the Offer resource:

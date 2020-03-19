@@ -17,13 +17,13 @@ class OffersController < ApplicationController
     @offer.furniture_id = params.fetch("query_furniture_id")
     @offer.furniture_buyer_id = params.fetch("query_furniture_buyer_id")
     @offer.offer_amount = params.fetch("query_offer_amount")
-    @offer.offer_accepted = params.fetch("query_offer_accepted", false)
+    @offer.offer_accepted = params.fetch("query_offer_accepted")
 
     if @offer.valid?
       @offer.save
-      redirect_to("/offers", { :notice => "Offer created successfully." })
+      redirect_to("/furnitures/#{@offer.furniture_id}", { :notice => "Offer created successfully." })
     else
-      redirect_to("/offers", { :notice => "Offer failed to create successfully." })
+      redirect_to("/furnitures/#{@offer.furniture_id}", { :notice => "Offer failed to create successfully." })
     end
   end
 
@@ -34,14 +34,25 @@ class OffersController < ApplicationController
     @offer.furniture_id = params.fetch("query_furniture_id")
     @offer.furniture_buyer_id = params.fetch("query_furniture_buyer_id")
     @offer.offer_amount = params.fetch("query_offer_amount")
-    @offer.offer_accepted = params.fetch("query_offer_accepted", false)
+    @offer.offer_accepted = params.fetch("query_offer_accepted")
 
     if @offer.valid?
       @offer.save
-      redirect_to("/offers/#{@offer.id}", { :notice => "Offer updated successfully."} )
+      redirect_to("/furnitures/#{@offer.furniture_id}", { :notice => "Offer updated successfully."} )
     else
-      redirect_to("/offers/#{@offer.id}", { :alert => "Offer failed to update successfully." })
+      redirect_to("/furnitures/#{@offer.furniture_id}", { :alert => "Offer failed to update successfully." })
     end
+
+    if @offer.offer_accepted == "accept"
+      @offer_furniture = Furniture.where({ :id => @offer.furniture_id}).at(0)
+      @offer_furniture.is_available = false 
+      @offer_furniture.save
+    elsif @offer.offer_accepted == "reject"
+      @offer_furniture = Furniture.where({ :id => @offer.furniture_id}).at(0)
+      @offer_furniture.is_available = true
+      @offer_furniture.save
+    end 
+    
   end
 
   def destroy

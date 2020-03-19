@@ -33,4 +33,6 @@ class Furniture < ApplicationRecord
 
   # The users that made offers on a furniture item
   has_many :furniture_buyers, :through => :offers, :source => :furniture_buyer
+
+  mount_uploader :image, ImageUploader
 end

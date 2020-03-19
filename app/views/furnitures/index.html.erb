@@ -17,7 +17,7 @@
       Sell a furniture item
     </h2>
 
-    <form action="/insert_furniture" method="post">
+    <form action="/insert_furniture" method="post" enctype="multipart/form-data">
       <div class="form-group">
         <label for="item_box">
           Item
@@ -37,11 +37,11 @@
       <div class="form-group">
         <label for="category_box">Category:</label>
         <select id="category_box" name="query_category">
-          <option value="Living Room">Living Room</option>
-          <option value="Bedroom">Bedroom</option>
-          <option value="Kitchen">Kitchen + Cooking</option>
-          <option value="Bathroom">Bathroom</option>
-          <option value="Misc">Miscellaneous</option>
+          <option value="living_room">Living Room</option>
+          <option value="bedroom">Bedroom</option>
+          <option value="kitchen">Kitchen + Cooking</option>
+          <option value="bathroom">Bathroom</option>
+          <option value="misc">Miscellaneous</option>
         </select>
       </div>
 
@@ -76,7 +76,7 @@
           Image
         </label>
 
-        <input type="text" id="image_box" name="query_image" class="form-control" placeholder="Enter an image URL">
+        <input type="file" id="image_box" name="image" class="form-control" placeholder="Enter an image URL">
       </div>
 
       <%# <div class="custom-control custom-checkbox mb-3"> %>
@@ -155,10 +155,6 @@
 
       <% @furnitures.each do |furniture| %>
       <tr>
-        <%# <td>
-          <%= furniture.id %>
-        <%# </td> %>
-
         <td>
           <%= furniture.item %>
         </td>
@@ -168,7 +164,17 @@
         </td>
 
         <td>
-          <%= furniture.category %>
+          <% if furniture.category == "living_room"%>
+          Living Room
+          <% elsif furniture.category == "bedroom"%>
+          Bedroom
+          <% elsif furniture.category == "kitchen"%>
+          Kitchen
+          <% elsif furniture.category == "bathroom"%>
+          Bathroom
+          <% else %>
+          Miscellaneous
+          <% end %>
         </td>
 
         <td>
@@ -176,10 +182,9 @@
         </td>
 
         <td>
-          <%# <a href="/users/<%= furniture.owner.username %>
-          <%# "> %> 
+          <a href="/users/<%= furniture.owner.username %>"> 
             <%= furniture.owner.username %>
-          <%# </a> %>
+          </a> 
         </td>
 
         <td>
@@ -194,8 +199,8 @@
           <% end %>
         </td>
 
-        <td>
-          <%= furniture.image %>
+        <td>  
+          <img src="<%= furniture.image %>" class="img-responsive" width="100%">
         </td>
 
         <td>

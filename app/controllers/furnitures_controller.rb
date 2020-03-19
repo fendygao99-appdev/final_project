@@ -1,6 +1,13 @@
 class FurnituresController < ApplicationController
   skip_before_action(:force_user_sign_in, { :only => [:index] })
   
+  def show_category
+    @furnitures = Furniture.where({ :category => params.fetch(:category_name) }).order({ :created_at => :desc })
+    
+    render({ :template => "furnitures/index.html.erb" })
+  end
+
+
   def index
     @furnitures = Furniture.all.order({ :created_at => :desc })
     
@@ -23,7 +30,7 @@ class FurnituresController < ApplicationController
     @furniture.owner_id = params.fetch("query_owner_id")
     @furniture.price = params.fetch("query_price")
     @furniture.is_available = params.fetch("query_is_available", false)
-    @furniture.image = params.fetch("query_image")
+    @furniture.image = params.fetch("image")
 
     if @furniture.valid?
       @furniture.save

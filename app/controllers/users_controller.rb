@@ -1,13 +1,20 @@
 class UsersController < ApplicationController
   skip_before_action(:force_user_sign_in, { :only => [:new_registration_form, :create] })
+  before_action(:load_user, { :only => [:show] })
+  
+
+  def load_user
+    the_username = params.fetch("username")
+    @user = User.where({ :username => the_username }).at(0)
+  end
   
   def new_registration_form
     render({ :template => "user_sessions/sign_up.html.erb" })
   end
 
   def show
-    @the_username = params.fetch("username")
-    @user = User.where({:id => @the_username }).at(0)
+    # @the_username = params.fetch("username")
+    # @user = User.where({:id => @the_username }).at(0)
 
     render({ :template => "users/show.html.erb" })
   end
@@ -35,7 +42,7 @@ class UsersController < ApplicationController
   end
 
   def update
-    # @user = @current_user
+    @user = @current_user
     @user.email = params.fetch("query_email")
     @user.password = params.fetch("query_password")
     @user.password_confirmation = params.fetch("query_password_confirmation")
@@ -51,8 +58,8 @@ class UsersController < ApplicationController
   end
 
   def destroy
-    @user.destroy
-    # @current_user.destroy
+    
+    @current_user.destroy
     reset_session
     
     redirect_to("/", { :notice => "User account cancelled" })
